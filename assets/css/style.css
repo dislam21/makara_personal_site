@@ -1,0 +1,353 @@
+/* General Styles */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    color: black;
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+/* Logo Container */
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    width: 40px; /* Adjust based on your logo size */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 0.5rem; /* Spacing between the logo and the name */
+    border-radius: 8px; /* Slightly round the corners */
+    border: 2px solid #000000; /* Add a light blue border */
+}
+
+.logo-text {
+    font-size: 2rem;
+    font-weight: 700;
+    color: black;
+    text-transform: uppercase;
+    margin: 0; /* Remove default margin from <h1> */
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ccc;
+    background-color: white;
+    gap: 1rem;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.navbar ul li {
+    font-weight: 600;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #007BFF;
+}
+
+/* Chatbot Button Styling */
+.navbar ul li .chatbot-button {
+    background-color: #007BFF; /* Light blue background */
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.navbar ul li .chatbot-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    height: 400px; /* Sets a fixed height for the hero section */
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ccc;
+    text-align: center; /* Ensures text alignment is center if needed */
+}
+
+.hero-image {
+    border-radius: 50%;
+    width: 325px; /* Larger image */
+    height: 325px;
+    object-fit: cover;
+    border: 5px solid #000000;
+}
+
+/* Section Styles */
+.section {
+    padding: 1.5rem 0;
+}
+
+.section h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: black;
+}
+
+.section p {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem auto;
+    max-width: 800px;
+}
+
+.section ul li {
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+}
+
+.section ul li strong {
+    color: black;
+}
+
+/* Professional Section */
+.professional-subsection {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem; /* Space between text and images */
+    margin-bottom: 2rem;
+}
+
+.professional-subsection .text {
+    flex: 1; /* Text takes up one part of the space */
+}
+
+.professional-subsection .text h3 {
+    font-size: 1.5rem;
+    color: black;
+    margin-bottom: 1rem;
+}
+
+.professional-subsection .text ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.professional-subsection .text ul li {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    position: relative;
+}
+
+.professional-subsection .text ul li:before {
+    content: "•"; /* Add a bullet */
+    color: #000000;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.professional-subsection .images {
+    flex: 0.5; /* Images take up one part of the space */
+    display: flex;
+    flex-direction: column; /* Stack images vertically */
+    gap: 1rem; /* Space between images */
+}
+
+.professional-subsection .images img {
+    width: 100%; /* Make images responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 8px; /* Optional: Add rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow */
+}
+
+
+@media (max-width: 768px) {
+    .professional-subsection {
+        flex-direction: column; /* Stack text and images vertically */
+        align-items: center; /* Center align content for better readability */
+        text-align: center; /* Center text content */
+    }
+
+    .professional-subsection .text {
+        width: 100%; /* Make the text span the full width */
+        margin-bottom: 1rem; /* Add spacing below the text */
+    }
+
+    .professional-subsection .images {
+        width: 100%; /* Make the images span the full width */
+    }
+
+    .professional-subsection .images img {
+        width: 90%; /* Reduce image size slightly for mobile view */
+        max-width: 400px; /* Ensure images don’t grow too large */
+    }
+}
+
+/* Personal Subsections */
+.Personal-subsections {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+
+.Personal-subsections > div {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.Personal-subsections h3 {
+    color: #007BFF;
+    margin-bottom: 0.5rem;
+}
+
+/* Hobbies Section */
+.hobbies .hobby {
+    margin-bottom: 2rem; /* Space between hobby items */
+}
+
+.hobbies .hobby p {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem; /* Space between text and image */
+}
+
+.hobbies .hobby img {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: block;
+    margin: 0 auto; /* Center the image */
+}
+
+/* Travel Grid */
+.travel-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.travel-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.travel-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.travel-item img:hover {
+    transform: scale(1.05);
+}
+
+/* Caption Styling */
+.travel-item .caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Show Caption on Hover */
+.travel-item:hover .caption,
+.travel-item:focus-within .caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Ensure Images Are Focusable */
+.travel-item img {
+    outline: none; /* Removes default focus outline */
+}
+
+.travel-item img:focus {
+    outline: 2px solid #007BFF; /* Optional: Highlight focused image */
+}
+
+@media (max-width: 768px) {
+    .travel-grid {
+        grid-template-columns: 1fr; /* Switch to 1 column for smaller screens */
+    }
+}
+
+/* Horizontal Line Divider */
+.section-divider {
+    border: none; /* Remove default styling */
+    border-top: 1px solid #ccc; /* Thin gray line */
+    margin: 2rem 0; /* Add spacing above and below */
+    width: 90%; /* Optional: Reduce width to make it shorter */
+    margin-left: auto; /* Center the line */
+    margin-right: auto; /* Center the line */
+}
+
+
+/* Contact Links */
+.contact a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact a:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    background: #f8f9fa;
+    color: black;
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 1px solid #ccc;
+}
