@@ -87,6 +87,23 @@ body {
     transform: scale(1.05); /* Slight zoom effect */
 }
 
+@media (max-width: 768px) {
+    .navbar {
+        justify-content: center; /* Center the navbar on smaller screens */
+    }
+
+    .navbar ul {
+        flex-direction: column; /* Stack navigation items vertically */
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .chatbot-button {
+        width: 90%; /* Make the button full width on smaller screens */
+        text-align: center;
+    }
+}
+
 /* Hero Section */
 .hero {
     display: flex;
