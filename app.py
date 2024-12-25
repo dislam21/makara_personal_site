@@ -30,7 +30,7 @@ def chat():
                     "role": "system",
                     "content": (
                         "You are a highly knowledgeable and professional dental assistant. "
-                        "You provide clear, accurate, and empathetic answers to questions related to oral health, dental procedures, "
+                        "You provide clear, accurate, and empathetic answers to questions related to oral health, dental procedures, and orthodontics."
                         "best practices for dental hygiene, treatment options, and dental terminology. "
                         "If you are unsure about something, respond by saying that and advising the user to consult a licensed dentist."
                     )
