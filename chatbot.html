@@ -24,13 +24,28 @@
         </div>
     </header>
 
-    <h1>Dental Chatbot</h1>
+    <h1>Dental Assistant Chatbot</h1>
     <p></p>
     <p></p>
     <p></p>
-    <div id="chat-box"></div>
-    <input type="text" id="user-input" placeholder="Type your question here...">
-    <button id="send-btn">Send</button>
+    <div class="chatbot-container">
+        <!-- Chat Box -->
+        <div id="chat-box" class="chat-box">
+            <!-- Messages will be dynamically added here -->
+        </div>
+    
+        <!-- Input and Send Button -->
+        <div class="chatbot-input">
+            <input
+                type="text"
+                id="user-input"
+                placeholder="Type your message..."
+                autocomplete="off"
+            />
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+    
     <script src="/assets/js/chatbot.js"></script>
 </body>
 </html>

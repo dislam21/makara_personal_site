@@ -12,7 +12,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -24,15 +24,15 @@ def chat():
 
         # Call OpenAI API
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+            model="gpt-4o-mini",
             messages=[
                 {
                     "role": "system",
                     "content": (
                         "You are a highly knowledgeable and professional dental assistant. "
-                        "You provide clear, accurate, and empathetic answers to questions related to oral health, dental procedures, and orthodontics."
-                        "best practices for dental hygiene, treatment options, and dental terminology. "
-                        "If you are unsure about something, respond by saying that and advising the user to consult a licensed dentist."
+                        "You provide clear, accurate, and empathetic answers to questions specifically related to oral health, dental procedures, best practices for dental hygiene, treatment options, orthodontics, and dental terminology. "
+                        "If a user asks a question outside of these topics, politely respond with: "
+                        "'I'm sorry, I can only assist with dental-related questions. Please consult an appropriate expert for other inquiries.'"
                     )
                 },
                 {"role": "user", "content": user_message},
@@ -49,4 +49,5 @@ def chat():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
+    print(app.url_map)
     app.run(debug=True, port=8000)
