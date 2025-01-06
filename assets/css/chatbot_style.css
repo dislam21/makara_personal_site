@@ -18,6 +18,31 @@ h1 {
     align-items: center;
 }
 
+/* Disclaimer Section */
+.chatbot-disclaimer {
+    background-color: #f4f4f4;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid #ddd;
+}
+
+.chatbot-disclaimer h2 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #007BFF;
+}
+
+.chatbot-disclaimer p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.chatbot-disclaimer strong {
+    color: #d9534f; /* Red color for important disclaimer */
+}
+
 /* Chatbot Container */
 .chatbot-container {
     max-width: 1200px;
