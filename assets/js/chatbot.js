@@ -35,7 +35,7 @@ const sendMessage = async () => {
 
     // Send the message to the backend
     try {
-        const response = await fetch("https://your-app.onrender.com/chat", {
+        const response = await fetch("https://makara-personal-site.onrender.com/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message: userMessage }),
