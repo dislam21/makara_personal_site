@@ -1,71 +1,203 @@
 const chatBox = document.getElementById("chat-box");
 const userInput = document.getElementById("user-input");
 const sendBtn = document.getElementById("send-btn");
+const clearBtn = document.getElementById("clear-chat");
+const startersEl = document.getElementById("chat-starters");
 
-// Function to format the bot's message
-const formatBotMessage = (message) => {
-    // Replace newline characters with <br> for line breaks
-    const formattedMessage = message
-        .replace(/\n/g, "<br>") // Convert \n to HTML line breaks
-        .replace(/- (.+)/g, "<li>$1</li>"); // Convert list items to <li>
-    return formattedMessage;
-};
+const CHAT_URL = "https://makara-personal-site.onrender.com/chat";
 
-// Function to adjust chat box height dynamically
-const adjustChatBoxHeight = () => {
-    chatBox.style.height = "auto"; // Reset height
-    chatBox.style.height = `${chatBox.scrollHeight}px`; // Adjust height to content
-};
+const WELCOME_HTML = `
+  <p>Hi — I’m your <strong>dental information</strong> assistant. I can explain hygiene habits, common procedures, and terminology in plain language.</p>
+  <p>I’m not a substitute for an in-person exam or diagnosis. For urgent pain, swelling, bleeding, or trauma, contact a dentist or emergency care right away.</p>
+`;
 
-// Function to send the user's message
-const sendMessage = async () => {
-    const userMessage = userInput.value.trim();
-    if (!userMessage) return; // Do nothing if input is empty
+let isSending = false;
 
-    // Display user's message
-    chatBox.innerHTML += `<p><strong>You:</strong> ${userMessage}</p>`;
-    userInput.value = ""; // Clear the input field
+function escapeHtml(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+}
 
-    // Display a loading message
-    const loadingMessageId = `loading-${Date.now()}`; // Unique ID for the loading message
-    chatBox.innerHTML += `<p id="${loadingMessageId}"><strong>Assistant:</strong> Thinking...</p>`;
+/** Safe assistant HTML: escaped, then newlines to breaks; simple bullet lines become a list */
+function formatAssistantHtml(raw) {
+    const lines = escapeHtml(raw).split("\n");
+    let html = "";
+    let inList = false;
 
-    // Adjust chat box height after user input
-    adjustChatBoxHeight();
+    const flushList = () => {
+        if (inList) {
+            html += "</ul>";
+            inList = false;
+        }
+    };
 
-    // Send the message to the backend
+    for (const line of lines) {
+        const bullet = /^-\s+(.+)$/.exec(line);
+        if (bullet) {
+            if (!inList) {
+                html += "<ul>";
+                inList = true;
+            }
+            html += `<li>${bullet[1]}</li>`;
+        } else {
+            flushList();
+            if (line.trim() === "") {
+                html += "<br>";
+            } else {
+                html += `<p>${line}</p>`;
+            }
+        }
+    }
+    flushList();
+    return html;
+}
+
+function scrollChatToBottom() {
+    requestAnimationFrame(() => {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
+}
+
+function appendMessage(role, bodyHtmlOrText, options = {}) {
+    const { isHtml = false, extraClass = "" } = options;
+    const wrap = document.createElement("div");
+    wrap.className = `msg msg-${role} ${extraClass}`.trim();
+
+    const meta = document.createElement("span");
+    meta.className = "msg-meta";
+    meta.textContent = role === "user" ? "You" : "Assistant";
+
+    const body = document.createElement("div");
+    body.className = "msg-body";
+    if (isHtml) {
+        body.innerHTML = bodyHtmlOrText;
+    } else {
+        body.textContent = bodyHtmlOrText;
+    }
+
+    wrap.appendChild(meta);
+    wrap.appendChild(body);
+    chatBox.appendChild(wrap);
+    scrollChatToBottom();
+    return wrap;
+}
+
+function showTypingIndicator() {
+    const el = appendMessage("assistant", "", { extraClass: "msg-typing" });
+    const body = el.querySelector(".msg-body");
+    body.innerHTML =
+        '<span class="typing-dot" aria-hidden="true"></span><span class="typing-dot" aria-hidden="true"></span><span class="typing-dot" aria-hidden="true"></span>';
+    el.querySelector(".msg-meta").textContent = "Assistant";
+    el.setAttribute("aria-busy", "true");
+    el.dataset.typing = "true";
+    return el;
+}
+
+function setBusy(busy) {
+    isSending = busy;
+    sendBtn.disabled = busy;
+    userInput.disabled = busy;
+    clearBtn.disabled = busy;
+    document.querySelectorAll(".chat-starter").forEach((btn) => {
+        btn.disabled = busy;
+    });
+}
+
+function autoResizeTextarea() {
+    userInput.style.height = "auto";
+    userInput.style.height = `${Math.min(userInput.scrollHeight, 8 * 24)}px`;
+}
+
+async function sendMessage(textOverride) {
+    const userMessage = (textOverride ?? userInput.value).trim();
+    if (!userMessage || isSending) return;
+
+    userInput.value = "";
+    autoResizeTextarea();
+
+    appendMessage("user", userMessage);
+    if (startersEl && !startersEl.classList.contains("is-hidden")) {
+        startersEl.classList.add("is-hidden");
+    }
+
+    setBusy(true);
+    const typingEl = showTypingIndicator();
+
     try {
-        const response = await fetch("https://makara-personal-site.onrender.com/chat", {
+        const response = await fetch(CHAT_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message: userMessage }),
         });
 
+        const data = await response.json().catch(() => ({}));
+
         if (!response.ok) {
-            throw new Error(`Failed to fetch: ${response.statusText}`);
+            const errText =
+                typeof data.error === "string" ? data.error : response.statusText || "Request failed";
+            throw new Error(errText);
         }
 
-        const data = await response.json(); // Parse the JSON response
-        const botMessage = formatBotMessage(data.message); // Format the bot message
+        if (data.error) {
+            throw new Error(typeof data.error === "string" ? data.error : "Server error");
+        }
 
-        // Replace the loading message with the bot's response
-        document.getElementById(loadingMessageId).outerHTML = `<p><strong>Assistant:</strong> ${botMessage}</p>`;
+        const reply = data.message;
+        if (typeof reply !== "string") {
+            throw new Error("Unexpected response from server.");
+        }
+
+        typingEl.remove();
+        appendMessage("assistant", formatAssistantHtml(reply), { isHtml: true });
     } catch (error) {
-        // Replace the loading message with an error message
-        document.getElementById(loadingMessageId).outerHTML = `<p><strong>Assistant:</strong> Error: ${error.message}</p>`;
+        typingEl.remove();
+        const msg = error instanceof Error ? error.message : "Something went wrong.";
+        appendMessage(
+            "assistant",
+            `I couldn’t reach the assistant just now. (${msg}) Please try again in a moment.`,
+        );
+    } finally {
+        setBusy(false);
+        userInput.focus();
+        scrollChatToBottom();
     }
+}
 
-    // Adjust chat box height after receiving the response
-    adjustChatBoxHeight();
-};
+function resetChat() {
+    if (isSending) return;
+    chatBox.innerHTML = "";
+    appendMessage("assistant", WELCOME_HTML, { isHtml: true });
+    if (startersEl) {
+        startersEl.classList.remove("is-hidden");
+    }
+    userInput.value = "";
+    autoResizeTextarea();
+    userInput.focus();
+}
 
-// Add event listener for the "Send" button
-sendBtn.addEventListener("click", sendMessage);
+sendBtn.addEventListener("click", () => sendMessage());
 
-// Add event listener for the "Enter" key
 userInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") { // Check if the "Enter" key was pressed
-        event.preventDefault(); // Prevent default form submission
-        sendMessage(); // Call the sendMessage function
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
     }
 });
+
+userInput.addEventListener("input", autoResizeTextarea);
+
+clearBtn.addEventListener("click", resetChat);
+
+document.querySelectorAll(".chat-starter").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        const prompt = btn.getAttribute("data-prompt");
+        if (prompt) {
+            userInput.value = prompt;
+            autoResizeTextarea();
+            sendMessage(prompt);
+        }
+    });
+});
+
+resetChat();

@@ -3,60 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dental Chatbot</title>
-    <link rel="stylesheet" href="/assets/css/chatbot_style.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <meta name="description" content="Ask dental hygiene and oral health questions. Informational AI assistant by Makara Sorel, DMD — not a substitute for professional care.">
+    <title>Dental Assistant | Makara Sorel, DMD</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/chatbot_style.css">
 </head>
-<body>
+<body class="chatbot-page">
     <header class="navbar">
         <div class="container">
             <div class="logo-container-chat-bot">
                 <div id="logo-and-name">
-                    <img src="/assets/images/logo.jpeg" alt="Logo" class="logo-image">
-                    <h1 class="logo-text">Makara Sorel</h1>
+                    <img src="assets/images/logo.jpeg" alt="" class="logo-image" width="40" height="40">
+                    <p class="logo-text chatbot-logo-text">Makara Sorel, DMD</p>
                 </div>
-                <div>
+                <nav aria-label="Chatbot page">
                     <ul>
-                        <li><a href="/index.html" class="chatbot-button">Home</a></li>
+                        <li><a href="index.html" class="chatbot-button">Home</a></li>
                     </ul>
-                </div>
+                </nav>
             </div>
         </div>
     </header>
 
-    <h1>Dental Assistant Chatbot</h1>
-    <p></p>
-    <p></p>
-    <div class="chatbot-disclaimer">
-        <p>
-            I am a dental student passionate about the potential of AI in healthcare. My interest in orthodontics and my summer research inspired me to create a chatbot that can assist with dental-related questions. During my research, I explored how AI-generated orthodontic treatment plans compare to gold-standard plans created by board-certified orthodontists.
-        </p>
-        <p>
-            With the help of my boyfriend, Dan, a software engineer, we developed this chatbot using OpenAI’s GPT model. I provided specific requirements for how the chatbot should behave, and Dan implemented the solution. Our future goal is to fine-tune this model using real-world data from professional dentists to improve its accuracy and utility.
-        </p>
-        <p>
-            <strong>Disclaimer:</strong> This chatbot is for informational purposes only. AI-generated responses may be incorrect or incomplete. Please verify any important information with a licensed dental professional, and always consult an appropriate healthcare provider for medical advice.
-        </p>
-    </div>
-    <p></p>
-    <div class="chatbot-container">
-        <!-- Chat Box -->
-        <div id="chat-box" class="chat-box">
-            <!-- Messages will be dynamically added here -->
+    <main class="chatbot-main">
+        <div class="chatbot-intro">
+            <h1 class="chatbot-title">Dental assistant chat</h1>
+            <p class="chatbot-lede">Ask about oral hygiene, procedures, or terminology. Answers are AI-generated and for education only.</p>
         </div>
-    
-        <!-- Input and Send Button -->
-        <div class="chatbot-input">
-            <input
-                type="text"
-                id="user-input"
-                placeholder="Type your message..."
-                autocomplete="off"
-            />
-            <button id="send-btn">Send</button>
-        </div>
-    </div>
-    
-    <script src="/assets/js/chatbot.js"></script>
+
+        <details class="chatbot-disclaimer-panel">
+            <summary>About this project and disclaimer</summary>
+            <div class="chatbot-disclaimer-inner">
+                <p>
+                    I’m Makara Sorel, DMD, a graduate of the UConn School of Dental Medicine (May 2026), and I’m passionate about the potential of AI in healthcare. My interest in orthodontics and my summer research inspired me to create a chatbot that can assist with dental-related questions. During my research, I explored how AI-generated orthodontic treatment plans compare to gold-standard plans created by board-certified orthodontists.
+                </p>
+                <p>
+                    With the help of my boyfriend, Dan, a software engineer, we developed this chatbot using OpenAI’s GPT model. I provided specific requirements for how the chatbot should behave, and Dan implemented the solution. Our future goal is to fine-tune this model using real-world data from professional dentists to improve its accuracy and utility.
+                </p>
+                <p class="chatbot-disclaimer-emphasis">
+                    <strong>Disclaimer:</strong> This chatbot is for informational purposes only. AI-generated responses may be incorrect or incomplete. Please verify any important information with a licensed dental professional, and always consult an appropriate healthcare provider for medical advice.
+                </p>
+            </div>
+        </details>
+
+        <section class="chat-shell" aria-labelledby="chat-heading">
+            <h2 id="chat-heading" class="visually-hidden">Conversation</h2>
+            <div class="chat-shell-header">
+                <div class="chat-shell-title">
+                    <span class="chat-shell-dot" aria-hidden="true"></span>
+                    <span>Assistant</span>
+                </div>
+                <button type="button" id="clear-chat" class="chat-clear-btn" title="Clear conversation and start over">Clear chat</button>
+            </div>
+
+            <div
+                id="chat-box"
+                class="chat-box"
+                role="log"
+                aria-relevant="additions"
+                aria-label="Chat messages"
+            ></div>
+
+            <div class="chat-starters" id="chat-starters" role="group" aria-label="Suggested questions">
+                <span class="chat-starters-label">Try asking:</span>
+                <button type="button" class="chat-starter" data-prompt="How often should I replace my toothbrush?">Toothbrush replacement</button>
+                <button type="button" class="chat-starter" data-prompt="What is fluoride varnish and who is it for?">Fluoride varnish</button>
+                <button type="button" class="chat-starter" data-prompt="What’s the difference between gingivitis and periodontitis?">Gingivitis vs periodontitis</button>
+            </div>
+
+            <div class="chat-composer">
+                <label for="user-input" class="visually-hidden">Your message</label>
+                <textarea
+                    id="user-input"
+                    class="chat-input"
+                    rows="1"
+                    placeholder="Type a dental question…"
+                    autocomplete="off"
+                    maxlength="4000"
+                ></textarea>
+                <button type="button" id="send-btn" class="chat-send-btn" aria-label="Send message">
+                    <span class="chat-send-label">Send</span>
+                    <span class="chat-send-icon" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+            <p class="chat-composer-hint"><kbd>Enter</kbd> to send · <kbd>Shift</kbd>+<kbd>Enter</kbd> for a new line</p>
+        </section>
+    </main>
+
+    <script src="assets/js/chatbot.js"></script>
 </body>
 </html>

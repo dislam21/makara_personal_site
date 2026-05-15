@@ -1,0 +1,5 @@
+venv/
+.DS_Store
+assets/.DS_Store
+makara_personal_site.code-workspace
+.env

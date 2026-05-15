@@ -131,6 +131,7 @@ body {
 .section h2 {
     text-align: center;
     font-size: 2rem;
+    margin-top: 0;
     margin-bottom: 1rem;
     color: black;
 }
@@ -157,6 +158,79 @@ body {
 
 .section ul li strong {
     color: black;
+}
+
+/* About: text + childhood photo side by side */
+.section.about .about-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.section.about .about-copy {
+    flex: 1;
+    min-width: 0;
+}
+
+.section.about .about-copy p {
+    text-align: left;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* About snapshot (childhood photo — compact column beside copy) */
+.section.about .about-snapshot {
+    margin: 0;
+    padding: 0;
+    flex-shrink: 0;
+    max-width: 240px;
+    width: min(240px, 42vw);
+}
+
+.section.about .about-snapshot img {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e5e5e5;
+    box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    .section.about .about-layout {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .section.about .about-copy p {
+        text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .section.about .about-snapshot {
+        margin-top: 1.25rem;
+        max-width: 220px;
+        width: min(220px, 70vw);
+    }
+}
+
+/* Professional / Personal: tighter space above the section <h2> */
+.section.professional,
+.section.Personal {
+    padding-top: 0.5rem;
+}
+
+.section.professional > .container,
+.section.Personal > .container {
+    padding-top: 0.5rem;
 }
 
 /* Professional Section */
@@ -243,7 +317,14 @@ body {
     gap: 2rem;
 }
 
-.Personal-subsections > div {
+/* Hobbies column can be wider so two 350px-wide photos fit in a row (food / engagement use max-width: 350px) */
+.Personal-subsections > .hobbies {
+    flex: 1;
+    min-width: 300px;
+    max-width: min(100%, calc(350px * 2 + 1.25rem));
+}
+
+.Personal-subsections > .travel {
     flex: 1;
     min-width: 300px;
     max-width: 500px;
@@ -273,6 +354,34 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     display: block;
     margin: 0 auto; /* Center the image */
+}
+
+/* Two pet photos: same max width per image as other hobby photos (350px); row fits two + gap */
+.hobbies .hobby .hobby-photo-pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.25rem;
+    width: 100%;
+    max-width: min(100%, calc(350px * 2 + 1.25rem));
+    margin: 0 auto;
+    align-items: start;
+}
+
+.hobbies .hobby .hobby-photo-pair .hobby-photo-cell {
+    min-width: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.hobbies .hobby .hobby-photo-pair .hobby-photo-cell img {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    margin: 0;
+    display: block;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Travel Grid */
@@ -346,6 +455,11 @@ body {
     width: 90%; /* Optional: Reduce width to make it shorter */
     margin-left: auto; /* Center the line */
     margin-right: auto; /* Center the line */
+}
+
+/* Less space between divider and the next section title (Professional / Personal) */
+.section-divider.section-divider--tight-below {
+    margin-bottom: 1rem;
 }
 
 
